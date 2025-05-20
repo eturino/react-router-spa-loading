@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -42,7 +43,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const isPending = useNavigation().state !== "idle"
+  if (isPending) {
+    console.log('[App] isNavigating -> show loading')
+    return <div>Loading App...</div>
+  }
+
+  console.log('[App] no navigating -> show outlet')
+  return <Outlet />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
